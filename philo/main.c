@@ -7,7 +7,7 @@ int	main(int ac, char **av)
 		if (!ft_checker(av))
 		{
 			write(2, "Error\n", 7);
-			return (-1);//ft_errors());
+			return (-1);
 		}
 		return (0);
 	}
