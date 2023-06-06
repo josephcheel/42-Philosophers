@@ -1,4 +1,4 @@
-#include "philo.h"
+#include "../inc/philo.h"
 
 void	ft_fill_info(int ac, char **av, t_info *info)
 {

@@ -6,11 +6,11 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 21:05:23 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/05/31 13:00:10 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:30:54 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 int	ft_usage(void)
 {

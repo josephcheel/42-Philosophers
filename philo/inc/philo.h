@@ -5,7 +5,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 #include <limits.h>
-#include "libft/libft.h"
+#include "../libft/libft.h"
 
 
 /*Allowed Functions
@@ -15,7 +15,6 @@
 	pthread_mutex_destroy, pthread_mutex_lock,
 	pthread_mutex_unlock*/
 
-#
 
 typedef struct s_info
 {

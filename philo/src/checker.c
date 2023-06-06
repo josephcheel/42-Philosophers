@@ -1,4 +1,4 @@
-#include "philo.h"
+#include "../inc/philo.h"
 
 int	ft_isdigit_arg(int ac, char **av)
 {
