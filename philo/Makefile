@@ -6,7 +6,7 @@
 #    By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/13 12:21:20 by jcheel-n          #+#    #+#              #
-#    Updated: 2023/06/05 17:51:37 by jcheel-n         ###   ########.fr        #
+#    Updated: 2023/06/06 20:19:26 by jcheel-n         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ INCLUDE = -I $(INC_DIR)
 
 LIBFT	= libft/libft.a
 
-PHILO_SRC	=	main.c checker.c fill_info.c create_threads.c
+PHILO_SRC	=	main.c checker.c fill_info.c create_threads.c states.c #create_table.c
 
 SRCS	+=	$(addprefix $(SRC_DIR), $(PHILO_SRC))
 OBJS	=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
