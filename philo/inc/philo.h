@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:01 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/06/06 20:23:11 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/07/20 02:59:55 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ typedef struct	s_info	t_info;
 
 typedef struct philo
 {
-	int				value;
-	bool			fork;
-	// bool			first;
-	// struct philo	*next;
-	t_info			*info;
+	int				name;
+	pthread_t			th; 
+	bool			right_fork;
+	bool			left_fork;
+
 }t_philo;
 
 typedef struct	s_info
@@ -40,9 +40,7 @@ typedef struct	s_info
 	int			time_to_sleep;
 	int			nbr_times_eat;
 
-	struct timeval 	begin_time_in_ms;
-	int				actual_time_in_ms;
-	int				timestamp_in_ms;
+	time_t 	begin_time_in_ms;
 	t_philo			*philo;
 	pthread_mutex_t	*mutex;
 }t_info;
@@ -58,11 +56,13 @@ typedef struct	s_info
 
 
 int	ft_checker(int ac, char **av);
-int	ft_create_threads(t_info *table);
 int	ft_fill_info(int ac, char **av, t_info *philo);
 
-t_philo	*ft_create_table(int size);
+// t_philo	*ft_create_table(int size);
 void	ft_delete_table(t_philo **head);
+void	ft_create_philo(t_info	*info);
+int	ft_create_threads(t_info *info);
+void	ft_create_multiple_mutex(t_info *info);
 
 void	ft_print_fork(t_philo *philo);
 void	ft_print_eating(t_philo *philo);

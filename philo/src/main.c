@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 21:05:23 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/06/06 20:23:22 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/07/20 03:06:28 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,10 @@ int	main(int ac, char **av)
 		return (ft_usage());
 	if (ft_checker(ac, av) != 0)
 		return (-1);
-	// info->table = ft_create_table(ft_atoi(av[1]));
-	// if (!info->table)
-	// {
-	// 	ft_delete_table(&info->table);
-	// 	free(info);
-	// 	return (1);
-	// }
-
-	ft_fill_info(ac, av, info);
-
-	// ft_create_philo(info);
-	// printf("time to die %d\n", info->time_to_die);
-	// ft_create_threads(info);
-	// printf("time to die %d\n", info->time_to_die);
-	// ft_printlist(table, "TABLE VALUES");
-	// ft_printforks(table, "TABLE FORKS");
-	return 0;
-	// printf("%d", table->value);
-
-	// ft_create_threads(&info);
-	// printf("%d\n", info.nbr_of_philo);
-	// printf("%d\n", info.time_to_die);
-	// printf("%d\n", info.time_to_eat);
-	// printf("%d\n", info.time_to_sleep);
-	// if (info.nbr_times_eat)
-	// 	printf("%d\n", info.nbr_times_eat);
-	// if (ft_create_threads(&info) != 0)
-	// 	return (-1);
+	if (ft_fill_info(ac, av, info) != 0)
+		return 1;
+	ft_create_philo(info);
+	ft_create_multiple_mutex(info);
+	ft_create_threads(info);
+	return (0);
 }
