@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:01 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/07/25 20:40:51 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:15:24 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,9 @@ typedef struct	s_inf
 {
 	pthread_t	*ths;
 	int			dead;
-	int			status; // 1 if is eating 
 	int			finished;
 	int			nbr_of_philo;
 	int			nbr_meals;
-	int			count;
 
 	int			time_to_die;
 	int			time_to_eat;

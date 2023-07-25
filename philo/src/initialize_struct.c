@@ -55,7 +55,6 @@ int	ft_init_philos(t_inf	*inf)
 	{
 		inf->philos[nbr].name = nbr + 1;
 		inf->philos[nbr].time_last_eat = ft_actual_time(inf);
-	
 		inf->philos[nbr].eating	= 0;
 		inf->philos[nbr].sleeping = 0;
 		inf->philos[nbr].thinking = 0;
@@ -92,5 +91,6 @@ int	ft_init_struct(t_inf *inf, int ac, char **av)
 		return (-1);
 	inf->start_time = time.tv_sec * 1000 + time.tv_usec / 1000;
 	inf->dead = 0;
+	inf->finished = 0;
 	return (0);
 }

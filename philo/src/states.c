@@ -11,35 +11,41 @@ long long ft_actual_time(t_inf *inf)
 void	ft_print_fork(t_inf *inf, int name)
 {
 	pthread_mutex_lock(&inf->writer);
-	printf("%lld %d has taken a fork\n", ft_actual_time(inf), name);
+	if (inf->finished != 1)
+		printf("%lld %d has taken a fork\n", ft_actual_time(inf), name);
 	pthread_mutex_unlock(&inf->writer);
 }
 
 void	ft_print_eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->inf->writer);
-	printf("%lld %d is eating\n", ft_actual_time(philo->inf), philo->name);
+	if (philo->inf->finished != 1)
+		printf("%lld %d is eating\n", ft_actual_time(philo->inf), philo->name);
 	pthread_mutex_unlock(&philo->inf->writer);
 }
 
 void	ft_print_sleeping(t_philo *philo)
 {
+	
 	pthread_mutex_lock(&philo->inf->writer);
-	printf("%lld %d is sleeping\n", ft_actual_time(philo->inf), philo->name);
+	if (philo->inf->finished != 1)
+		printf("%lld %d is sleeping\n", ft_actual_time(philo->inf), philo->name);
 	pthread_mutex_unlock(&philo->inf->writer);
 }
 
 void	ft_print_thinking(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->inf->writer);
-	printf("%lld %d is thinking\n", ft_actual_time(philo->inf), philo->name);
+	if (philo->inf->finished != 1)
+		printf("%lld %d is thinking\n", ft_actual_time(philo->inf), philo->name);
 	pthread_mutex_unlock(&philo->inf->writer);
 }
 
 void	ft_print_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->inf->writer);
-	printf("%lld %d died\n", ft_actual_time(philo->inf), philo->name);
+	if (philo->inf->finished != 1)
+		printf("%lld %d died\n", ft_actual_time(philo->inf), philo->name);
 	pthread_mutex_unlock(&philo->inf->writer);
 }
 
