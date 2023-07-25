@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:01 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/07/20 02:59:55 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/07/25 20:40:51 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,44 @@
 #include "../libft/libft.h"
 #include <stdbool.h>
 
-typedef struct	s_info	t_info;
+typedef struct	s_inf	t_inf;
 
 typedef struct philo
 {
-	int				name;
-	pthread_t			th; 
-	bool			right_fork;
-	bool			left_fork;
 
+	int					name;
+	int					eating;
+	int					sleeping;
+	int					thinking;
+	time_t				time_last_eat;
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		*left_fork;
+	t_inf				*inf;
+	pthread_t			super;
+	pthread_mutex_t		lock;
 }t_philo;
 
-typedef struct	s_info
+typedef struct	s_inf
 {
-	bool		dead;
+	pthread_t	*ths;
+	int			dead;
+	int			status; // 1 if is eating 
+	int			finished;
 	int			nbr_of_philo;
+	int			nbr_meals;
+	int			count;
+
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
-	int			nbr_times_eat;
+	time_t		start_time;
 
-	time_t 	begin_time_in_ms;
-	t_philo			*philo;
-	pthread_mutex_t	*mutex;
-}t_info;
+	t_philo			*philos;
+	
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	writer;
+	pthread_mutex_t	lock;
+}t_inf;
 
 
 
@@ -56,16 +70,34 @@ typedef struct	s_info
 
 
 int	ft_checker(int ac, char **av);
-int	ft_fill_info(int ac, char **av, t_info *philo);
 
 // t_philo	*ft_create_table(int size);
 void	ft_delete_table(t_philo **head);
-void	ft_create_philo(t_info	*info);
-int	ft_create_threads(t_info *info);
-void	ft_create_multiple_mutex(t_info *info);
+// void	ft_create_philo(t_inf	*inf);
+int	ft_create_threads(t_inf *inf);
+// void	ft_create_multiple_mutex(t_inf *inf);
 
-void	ft_print_fork(t_philo *philo);
+void	ft_print_fork(t_inf *inf, int name);
 void	ft_print_eating(t_philo *philo);
 void	ft_print_sleeping(t_philo *philo);
 void	ft_print_thinking(t_philo *philo);
-void	ft_print_died(t_philo *philo);
+void	ft_print_dead(t_philo *philo);
+
+int	ft_pick_fork(t_philo *philo);
+int	ft_drop_fork(t_philo *philo);
+int	ft_sleep(t_philo *philo);
+int	ft_eat(t_philo *philo);
+int	ft_think(t_philo *philo);
+
+void	*ft_routine(void *inf);
+void	ft_delete(t_inf *inf);
+
+
+int	ft_init(t_inf *inf,int ac,char **av);
+int	ft_init_mutex(t_inf *inf);
+int	ft_init_alloc(t_inf *inf);
+int	ft_init_struct(t_inf *inf, int ac, char **av);
+
+
+
+long long ft_actual_time(t_inf *inf);

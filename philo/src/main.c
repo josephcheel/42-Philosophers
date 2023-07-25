@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 21:05:23 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/07/20 03:06:28 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:14:03 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,15 @@ int	ft_usage(void)
 
 int	main(int ac, char **av)
 {
-	t_info	*info;
+	t_inf	inf;
 
-	info = (t_info *)malloc(sizeof(t_info *));
+	// inf = (t_inf *)malloc(sizeof(t_inf *));
 	if (!(ac == 5 || ac == 6))
 		return (ft_usage());
 	if (ft_checker(ac, av) != 0)
 		return (-1);
-	if (ft_fill_info(ac, av, info) != 0)
-		return 1;
-	ft_create_philo(info);
-	ft_create_multiple_mutex(info);
-	ft_create_threads(info);
+	ft_init(&inf, ac, av);
+	ft_create_threads(&inf);
+	ft_delete(&inf);
 	return (0);
 }
