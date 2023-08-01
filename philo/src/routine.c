@@ -5,12 +5,14 @@ void	*meal_checks(void *data)
 	t_inf *inf;
 
 	inf = ((t_inf *)data);
+	printf("HOLA");
 	while(inf->dead == 0)
 	{
-		pthread_mutex_lock(&inf->meal);
+		pthread_mutex_lock(&inf->lock);
 		if (inf->eaten == inf->nbr_of_philo)
 			inf->dead = 1;
-		pthread_mutex_unlock(&inf->meal);
+		printf("DEATH %d", inf->dead);
+		pthread_mutex_unlock(&inf->lock);
 	}
 	return (NULL);
 }
@@ -26,14 +28,17 @@ void	*supervisor(void *data)
 		if (ft_actual_time(philo->inf) - philo->time_last_eat  > philo->inf->time_to_die && 
 			philo->eating == 0 && philo->inf->dead == 0)
 			philo->inf->dead = 1;
-		if (philo->meals_count == philo->inf->nbr_of_meals && philo->finished == 0)
+	if (philo->meals_count == philo->inf->nbr_of_meals && philo->finished == 0 )
 		{
-			philo->finished = 1;
 			philo->inf->eaten += 1;
+			philo->finished = 1;
 		}
-		// printf("NBR MEALS EATEN: %d\n", philo->inf->eaten);
-		// printf("NAME %d MEAL_COUNT: %d\n", philo->name, philo->meals_count);
+		printf("NBR MEALS EATEN   : %d\n", philo->inf->eaten);
+		printf("NAME %d MEAL_COUNT: %d == %d && %d\n", philo->name, philo->meals_count, philo->inf->nbr_of_meals, philo->finished );
 		pthread_mutex_unlock(&philo->inf->lock);
+		// pthread_mutex_lock(&philo->inf->meal);
+		
+		// pthread_mutex_unlock(&philo->inf->meal);
 	}
 	return (NULL);
 }
@@ -47,14 +52,11 @@ void	*ft_routine(void *data)
 	// printf("INFO EATEN: %d\n", philo->inf->eaten);
 	while (philo->inf->dead == 0)
 	{
-		
 		ft_pick_fork(philo);
 		ft_eat(philo);
 		ft_drop_fork(philo);
 		ft_sleep(philo);
 		ft_think(philo);
-		// printf("NBR MEALS %d\n", philo->meals_eaten);
-		// printf("MEAL NUM: %d\n ", philo->inf->nbr_of_meals);
 	}
 	pthread_join(philo->super, NULL);
 	pthread_mutex_lock(&philo->lock);
