@@ -16,7 +16,7 @@ int	ft_eat(t_philo *philo)
 	usleep(philo->inf->time_to_eat * 1000);
 	philo->time_last_eat = ft_actual_time(philo->inf);
 	philo->eating = 0;
-	philo->inf->nbr_meals++;
+	philo->meals_count += 1;
 	pthread_mutex_unlock(&philo->lock);
 	return (0);
 }

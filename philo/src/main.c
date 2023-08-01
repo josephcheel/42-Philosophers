@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 21:05:23 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/07/25 15:14:03 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/07/29 20:23:41 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,51 +23,18 @@ int	ft_usage(void)
 	return (-1);
 }
 
-// void	ft_printlist(t_philo *head, char *id)
-// {
-// 	t_philo	*temporary;
-
-// 	temporary = head;
-// 	printf("%s: ", id);
-// 	printf("%d - ", temporary->value);
-// 	temporary = temporary->next;
-// 	while (!temporary->first)
-// 	{
-// 		printf("%d - ", temporary->value);
-// 		temporary = temporary->next;
-// 	}
-// 	printf("\n");
-// }
-
-// void	ft_printforks(t_philo *head, char *id)
-// {
-// 	t_philo	*temporary;
-
-// 	temporary = head;
-// 	printf("%s: ", id);
-// 	printf("%d ", temporary->value);
-// 	printf("%d - ", temporary->fork);
-// 	temporary = temporary->next;
-// 	while (!temporary->first)
-// 	{
-// 		printf("%d ", temporary->value);
-// 		printf("%d - ", temporary->fork);
-// 		temporary = temporary->next;
-// 	}
-// 	printf("\n");
-// }
-
 int	main(int ac, char **av)
 {
 	t_inf	inf;
 
-	// inf = (t_inf *)malloc(sizeof(t_inf *));
 	if (!(ac == 5 || ac == 6))
 		return (ft_usage());
 	if (ft_checker(ac, av) != 0)
 		return (-1);
-	ft_init(&inf, ac, av);
-	ft_create_threads(&inf);
+	if (ft_init(&inf, ac, av) != 0)
+		return (-1); // Falta limpiar todo
+	if (ft_create_threads(&inf) != 0)
+		return (-1); // Falta limpiar todo
 	ft_delete(&inf);
 	return (0);
 }
