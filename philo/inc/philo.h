@@ -6,7 +6,7 @@
 /*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:01 by jcheel-n          #+#    #+#             */
-/*   Updated: 2023/07/31 11:48:45 by jcheel-n         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:04:15 by jcheel-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <limits.h>
-# include "../libft/libft.h"
+# include "../libft/inc/libft.h"
 # include <stdbool.h>
 
 typedef struct s_inf	t_inf;

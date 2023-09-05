@@ -31,6 +31,8 @@ int	ft_isdigit_arg(int ac, char **av)
 
 int	ft_checker(int ac, char **av)
 {
+	if (ft_atoi(av[1]) == 1)
+		return (-1);
 	if (ft_isdigit_arg(ac, av) != 0)
 		return (-1);
 	return (0);
