@@ -1,56 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcheel-n <jcheel-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/26 00:44:43 by jcheel-n          #+#    #+#             */
+/*   Updated: 2023/10/26 16:06:00 by jcheel-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
-void	*meal_checks(void *data)
+int	ft_check_dead(int set_dead, t_inf *inf)
 {
-	t_inf *inf;
-
-	inf = ((t_inf *)data);
-	// printf("HOLA");
-	while(inf->dead == 0)
+	pthread_mutex_lock(&inf->death);
+	if (set_dead)
 	{
-		pthread_mutex_lock(&inf->lock);
-		if (inf->eaten == inf->nbr_of_philo)
-			inf->dead = 1;
-		// printf("DEATH %d", inf->dead);
-		pthread_mutex_unlock(&inf->lock);
+		inf->dead = 1;
 	}
-	return (NULL);
+	if (inf->dead)
+	{
+		pthread_mutex_unlock(&inf->death);
+		return (1);
+	}
+	pthread_mutex_unlock(&inf->death);
+	return (0);
+}
+
+void	ft_check_meal(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->inf->meal);
+	if (philo->inf->eaten == philo->inf->nbr_of_philo)
+	{
+		pthread_mutex_unlock(&philo->inf->meal);
+		ft_check_dead(1, philo->inf);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->inf->meal);
+	return ;
 }
 
 void	*supervisor(void *data)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = ((t_philo *)data);
-	while(philo->inf->dead == 0)
+	pthread_mutex_lock(&philo->inf->meal);
+	if (!ft_check_dead(0, philo->inf) && ft_get_current_time()
+		- philo->time_last_eat > (long)(philo->inf->time_to_die))
 	{
-		pthread_mutex_lock(&philo->inf->lock);
-		if (ft_actual_time(philo->inf) - philo->time_last_eat  > philo->inf->time_to_die && 
-			philo->eating == 0 && philo->inf->dead == 0)
-			philo->inf->dead = 1;
-		if (philo->meals_count == philo->inf->nbr_of_meals && philo->finished == 0 )
-		{
-			philo->inf->eaten += 1;
-			philo->finished = 1;
-		}
-		if (philo->inf->eaten == philo->inf->nbr_of_philo)
-		{
-			philo->inf->finished = 1;	
-			philo->inf->dead = 1;
-		}
-		pthread_mutex_unlock(&philo->inf->lock);
+		pthread_mutex_unlock(&philo->inf->meal);
+		print_message(philo, "died");
+		ft_check_dead(1, philo->inf);
 	}
+	pthread_mutex_unlock(&philo->inf->meal);
+	if (philo->inf->ac == 6)
+		ft_check_meal(philo);
 	return (NULL);
 }
 
 void	*ft_routine(void *data)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = ((t_philo *)data);
-	pthread_create(&philo->super, NULL, &supervisor, philo);
-	// printf("INFO EATEN: %d\n", philo->inf->eaten);
-	while (philo->inf->dead == 0)
+	if (philo->name % 2 == 0)
+		ft_usleep(philo->inf->time_to_eat / 10);
+	while (!ft_check_dead(0, philo->inf))
 	{
 		ft_pick_fork(philo);
 		ft_eat(philo);
@@ -58,13 +75,5 @@ void	*ft_routine(void *data)
 		ft_sleep(philo);
 		ft_think(philo);
 	}
-	pthread_join(philo->super, NULL);
-	pthread_mutex_lock(&philo->lock);
-	if (philo->inf->finished == 0 && philo->inf->dead == 1)
-	{	
-		ft_print_dead(philo);
-		philo->inf->finished = 1;
-	}	
-	pthread_mutex_unlock(&philo->lock);	
 	return (NULL);
 }

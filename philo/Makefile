@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+         #
+#    By: jcheel-n <jcheel-n@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/13 12:21:20 by jcheel-n          #+#    #+#              #
-#    Updated: 2023/07/29 12:12:21 by jcheel-n         ###   ########.fr        #
+#    Updated: 2023/11/02 17:09:09 by jcheel-n         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CFLAGS	= -Wall -Wextra -Werror
-XFLAGS	= -fsanitize=address -g2
+XFLAGS	= -fsanitize=thread #-fsanitize=address -g2
 AR		= ar -rcs
 RM		= rm -f
 MD		= mkdir -p
@@ -25,9 +25,7 @@ OBJ_DIR	= obj/
 
 INCLUDE = -I $(INC_DIR)
 
-LIBFT	= libft/libft.a
-
-PHILO_SRC	=	main.c checker.c initialize_struct.c create_threads.c states.c routine.c delete.c loop.c #create_table.c states.c 
+PHILO_SRC	=	main.c checker.c initialize.c create_threads.c states.c routine.c delete.c loop.c utils.c#create_table.c states.c 
 
 SRCS	+=	$(addprefix $(SRC_DIR), $(PHILO_SRC))
 OBJS	=	$(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
@@ -41,7 +39,7 @@ $(OBJ_DIR)%.o: %.c Makefile
 all: ${NAME}
 
 ${NAME}: $(OBJS)
-	@$(CC) $(CFLAGS) $(XFLAGS) $(LIBFT)  $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(XFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(COLOUR_GREEN)Philo compiled$(COLOUR_END)"
 
 clean:

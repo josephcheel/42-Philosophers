@@ -1,16 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcheel-n <jcheel-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/26 00:44:52 by jcheel-n          #+#    #+#             */
+/*   Updated: 2023/10/30 16:56:20 by jcheel-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 int	ft_init_mutex(t_inf *inf)
 {
-	int nbr;
+	int	nbr;
 
 	nbr = -1;
-	
-	if (pthread_mutex_init(&inf->lock, NULL) != 0)
+	if (pthread_mutex_init(&inf->death, NULL) != 0)
 		return (-1);
-	if (pthread_mutex_init(&inf->writer, NULL)!= 0)
+	if (pthread_mutex_init(&inf->writer, NULL) != 0)
 		return (-1);
-	if(pthread_mutex_init(&inf->meal, NULL) != 0)
+	if (pthread_mutex_init(&inf->meal, NULL) != 0)
 		return (-1);
 	while (nbr++ < inf->nbr_of_philo)
 		if (pthread_mutex_init(&inf->forks[nbr], NULL) != 0)
@@ -22,7 +33,7 @@ int	ft_init_alloc(t_inf *inf)
 {
 	inf->forks = malloc(sizeof(pthread_mutex_t) * inf->nbr_of_philo);
 	if (!inf->forks)
-		return(1);
+		return (1);
 	inf->ths = malloc(sizeof(pthread_t) * inf->nbr_of_philo);
 	if (!inf->ths)
 		return (1);
@@ -31,9 +42,10 @@ int	ft_init_alloc(t_inf *inf)
 		return (-1);
 	return (0);
 }
+
 int	ft_init_forks(t_inf *inf)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (i < inf->nbr_of_philo)
@@ -49,51 +61,31 @@ int	ft_init_forks(t_inf *inf)
 
 int	ft_init_philos(t_inf	*inf)
 {
-	int nbr;
+	int	nbr;
 
 	nbr = -1;
 	ft_init_forks(inf);
 	while (++nbr < inf->nbr_of_philo)
 	{
 		inf->philos[nbr].name = nbr + 1;
-		inf->philos[nbr].time_last_eat = ft_actual_time(inf);
-		inf->philos[nbr].eating	= 0;
+		inf->philos[nbr].time_last_eat = 0;
 		inf->philos[nbr].meals_count = 0;
-		inf->philos[nbr].finished = 0;
-		pthread_mutex_init(&inf->philos[nbr].lock, NULL);
 		inf->philos[nbr].inf = inf;
 	}
-	return (0);	
-}
-
-int	ft_init(t_inf *inf,int ac, char **av)
-{
-	if (ft_init_struct(inf, ac, av) != 0)
-		return (1);
-	if (ft_init_alloc(inf) != 0)
-		return (1);
-	if (ft_init_mutex(inf) != 0)
-		return (1);
-	if (ft_init_philos(inf) != 0)
-		return (1);
 	return (0);
 }
 
 int	ft_init_struct(t_inf *inf, int ac, char **av)
 {
-	struct timeval	time;
-
 	inf->nbr_of_philo = ft_atoi(av[1]);
 	inf->time_to_die = ft_atoi(av[2]);
 	inf->time_to_eat = ft_atoi(av[3]);
 	inf->time_to_sleep = ft_atoi(av[4]);
 	if (ac == 6)
 		inf->nbr_of_meals = ft_atoi(av[5]);
-	if (gettimeofday(&time, NULL) != 0)
-		return (-1);
-	inf->start_time = time.tv_sec * 1000 + time.tv_usec * 0.001; ///  muliplico por * 0.001 en vez de dividir por 1000 porque la multiplicacion requiere menos recursos que dividir
+	inf->start_time = ft_get_current_time();
 	inf->dead = 0;
-	inf->finished = 0;
 	inf->eaten = 0;
+	inf->ac = ac;
 	return (0);
 }

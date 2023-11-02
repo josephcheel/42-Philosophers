@@ -1,50 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   states.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcheel-n <jcheel-n@student.42barcelona.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/26 00:44:36 by jcheel-n          #+#    #+#             */
+/*   Updated: 2023/10/26 00:54:31 by jcheel-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
-long long	ft_actual_time(t_inf *inf)
+long long	ft_get_current_time(void)
 {
-	struct timeval	actual_time;
+	struct timeval	current_time;
 
-	gettimeofday(&actual_time, NULL);
-	return ((actual_time.tv_sec * 1000 + actual_time.tv_usec / 1000)
+	gettimeofday(&current_time, NULL);
+	return ((current_time.tv_sec * 1000 + current_time.tv_usec / 1000));
+}
+
+long long	ft_get_time(t_inf *inf)
+{
+	struct timeval	current_time;
+
+	gettimeofday(&current_time, NULL);
+	return ((current_time.tv_sec * 1000 + current_time.tv_usec / 1000)
 		- inf->start_time);
 }
 
-void	ft_print_fork(t_inf *inf, int name)
+void	ft_usleep(int ms)
 {
-	pthread_mutex_lock(&inf->writer);
-	if (inf->finished != 1)
-		printf("%lld %d has taken a fork\n", ft_actual_time(inf), name);
-	pthread_mutex_unlock(&inf->writer);
+	long int	start;
+
+	start = ft_get_current_time();
+	while (ft_get_current_time() - start < ms)
+		usleep(ms / 10);
 }
 
-void	ft_print_eating(t_philo *philo)
+void	print_message(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->inf->writer);
-	if (philo->inf->finished != 1)
-		printf("%lld %d is eating\n", ft_actual_time(philo->inf), philo->name);
-	pthread_mutex_unlock(&philo->inf->writer);
-}
-
-void	ft_print_sleeping(t_philo *philo)
-{	
-	pthread_mutex_lock(&philo->inf->writer);
-	if (philo->inf->finished != 1)
-		printf("%lld %d is sleeping\n", ft_actual_time(philo->inf), philo->name);
-	pthread_mutex_unlock(&philo->inf->writer);
-}
-
-void	ft_print_thinking(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->inf->writer);
-	if (philo->inf->finished != 1)
-		printf("%lld %d is thinking\n", ft_actual_time(philo->inf), philo->name);
-	pthread_mutex_unlock(&philo->inf->writer);
-}
-
-void	ft_print_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->inf->writer);
-	if (philo->inf->finished != 1)
-		printf("%lld %d died\n", ft_actual_time(philo->inf), philo->name);
+	if (!ft_check_dead(0, philo->inf))
+		printf("%lld %d %s\n", ft_get_time(philo->inf), philo->name, msg);
 	pthread_mutex_unlock(&philo->inf->writer);
 }
